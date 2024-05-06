@@ -44,4 +44,17 @@ async function createItem(index, name, description, category, price, number_in_s
     await item.save();
     items[index] = item;
     console.log(`Added item: ${name}`);
+};
+
+// Note the plural nouns
+async function createCategories() {
+    console.log('Adding categories');
+    await Promise.all([
+        createCategory(0, 'Electronics', 'Electronic equipment intended for everyday consumption.'),
+        createCategory(1, 'Furniture', 'Homely sofas, tables and more.'),
+        createCategory(2, 'Books', 'Bound pieces of paper, transmitting knowledge.'),
+        createCategory(3, 'Fashion', 'Clothes that look nice.'),
+        createCategory(4, 'Self care', 'Get glistening skin with these wide selection of items.'),
+        createCategory(5, 'Kitchen', 'Appliances for use in the kitchen.')
+    ])
 }
