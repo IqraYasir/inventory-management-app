@@ -31,3 +31,17 @@ async function createCategory(index, name, description) {
     categories[index] = category;
     console.log(`Added category: ${name}`);
 };
+
+async function createItem(index, name, description, category, price, number_in_stock) {
+    const itemdetail = {
+        name: name,
+        description: description,
+        category: category,
+        price: price,
+        number_in_stock: number_in_stock
+    };
+    const item = new Item(itemdetail);
+    await item.save();
+    items[index] = item;
+    console.log(`Added item: ${name}`);
+}
