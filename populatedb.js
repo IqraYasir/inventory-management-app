@@ -60,7 +60,7 @@ async function createCategories() {
 };
 
 async function createItems() {
-    console.log('Adding books');
+    console.log('Adding items');
     await Promise.all([
         createItem(0, 'Canon EOS 2000D DSLR Camera',
             'Take Beautiful photos and movies with background blur. Easily connect, Shoot and Share on the move.',
