@@ -6,6 +6,9 @@ const logger = require('morgan');
 
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
+
+const dotenv = require('dotenv');
+dotenv.config();
 const mongoDB = process.env.MONGODB_URI;
 
 main().catch(err => console.log(err));
