@@ -6,7 +6,7 @@ block content
     p #[strong Category: ]
         a(href=item.category.url) #{item.category.name} 
     p #[strong Description:] #{item.description}
-    p #[strong Price:] #{item.price}
+    p #[strong Price:] $#{item.price}
     p #[strong Number in stock:] #{item.number_in_stock}
 
     if item.number_in_stock > 0
