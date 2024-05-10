@@ -19,7 +19,12 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
   
 exports.item_list = asyncHandler(async (req, res, next) => {
-    res.send('NOT IMPLEMENTED: Item list');
+    const allItems = await Item.find({}, 'name description')
+        .sort({name: 1})
+        .populate({category})
+        .exec();
+    
+    res.render('item_list', {title: 'Item List', item_list: allItems});
 });
 
 exports.item_detail = asyncHandler(async (req, res, next) => {
