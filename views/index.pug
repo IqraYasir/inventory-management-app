@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+  h1= title
+  p Welcome to #[em Inventory App]! Want to buy, sell and store stock?
+  | We're the perfect place for you. 
+
+  h2  Counters 
+
+  p Our storage has the following records: 
+
+  ul
+    li #[strong Items:] !{item_count}
+    li #[strong Categories:] !{category_count}
