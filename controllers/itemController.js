@@ -1,6 +1,8 @@
 const Item = require('../models/item');
 const Category = require('../models/category');
+
 const asyncHandler = require('express-async-handler');
+const {body, validationResult} = require('express-validator');
 
 exports.index = asyncHandler(async (req, res, next) => {
     const [
@@ -43,12 +45,78 @@ exports.item_detail = asyncHandler(async (req, res, next) => {
 });
 
 exports.item_create_get = asyncHandler(async (req, res, next) => {
-    res.send('NOT IMPLEMENTED: Item create GET');
+    const allCategories = await Category
+        .find()
+        .sort({name: 1})
+        .exec()
+
+    res.render('item_form', {
+        title: 'Create Item',
+        categories: allCategories
+    })
 });
 
-exports.item_create_post = asyncHandler(async (req, res, next) => {
-    res.send('NOT IMPLEMENTED: Item create POST');
-});
+exports.item_create_post = [
+    body('name', 'Name must be specified.')
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+        
+    body('description', 'Description must be specified.')
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+
+    body('category', 'Category must be specified.')
+        .trim()
+        .isLength({min: 1})
+        .escape(),
+
+    body('price')
+        .trim()
+        .isFloat({min: 0})
+        .withMessage('Price must be a number.')
+        .isLength({min: 1})
+        .escape()
+        .withMessage('Price must be specified.'),
+        
+    body('number_in_stock')
+        .trim()
+        .isInt({min: 0})
+        .withMessage('Number in stock must be a number.')
+        .isLength({min: 1})
+        .escape()
+        .withMessage('Number in stock must be specified.'),
+
+    asyncHandler(async(req, res, next) => {
+        const errors = validationResult(req);
+        
+        const item = new Item({
+            name: req.body.name,
+            description: req.body.description,
+            category: req.body.category,
+            price: req.body.price,
+            number_in_stock: req.body.number_in_stock
+        });
+
+        if (!errors.isEmpty()) {
+            const allCategories = await Category
+                .find()
+                .sort({min: 1})
+                .exec()
+            
+            res.render('item_form', {
+                title: 'Create Item',
+                categories: allCategories,
+                item: item,
+                errors: errors.array()
+            });
+        } else {
+            await item.save();
+            res.redirect(item.url);
+        }
+    })
+];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
     res.send('NOT IMPLEMENTED: Item delete GET');
