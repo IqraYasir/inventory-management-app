@@ -119,11 +119,7 @@ exports.item_create_post = [
 ];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
-<<<<<<< HEAD
-    const item = Item.findById(req.params.id).exec();
-=======
     const item = await Item.findById(req.params.id).exec();
->>>>>>> update
     if (item === null) {
         res.redirect('/home/items');
     }
