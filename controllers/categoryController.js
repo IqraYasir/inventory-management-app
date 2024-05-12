@@ -73,11 +73,39 @@ exports.category_create_post = [
 ];
 
 exports.category_delete_get = asyncHandler(async (req, res, next) => {
-    res.send('NOT IMPLEMENTED: Category delete GET');
+    const [category, allItemsInCategory] = await Promise.all([
+        Category.findById(req.params.id).exec(),
+        Item.find({category: req.params.id}).exec()
+    ]);
+
+    if (category === null) {
+        res.redirect('/home/categories');
+    }
+
+    res.render('category_delete', {
+        title: 'Delete Category',
+        category: category,
+        category_items: allItemsInCategory
+    });
 });
 
 exports.category_delete_post = asyncHandler(async (req, res, next) => {
-    res.send('NOT IMPLEMENTED: Category delete POST');
+    const [category, allItemsInCategory] = await Promise.all([
+        Category.findById(req.params.id).exec(),
+        Item.find({category: req.params.id}).exec()
+    ]);
+
+    if (allItemsInCategory > 0) {
+        res.render('category_delete', {
+            title: 'Delete Category',
+            category: category,
+            category_items: allItemsInCategory
+        });
+        return;
+    } else {
+        await Category.findByIdAndDelete(req.body.categoryid);
+        res.redirect('/home/categories');
+    }
 });
 
 exports.category_update_get = asyncHandler(async (req, res, next) => {
