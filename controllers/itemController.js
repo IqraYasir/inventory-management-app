@@ -119,7 +119,7 @@ exports.item_create_post = [
 ];
 
 exports.item_delete_get = asyncHandler(async (req, res, next) => {
-    const item = Item.findById(req.params.id).exec();
+    const item = await Item.findById(req.params.id).exec();
     if (item === null) {
         res.redirect('/home/items');
     }
@@ -187,7 +187,7 @@ exports.item_update_post = [
         .withMessage('Number in stock must be specified.'),
 
     asyncHandler(async (req, res, next) => {
-        const errors = validationrResult(req);
+        const errors = validationResult(req);
 
         const item = new Item({
             name: req.body.name,
